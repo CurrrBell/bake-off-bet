@@ -1,22 +1,36 @@
+<template>
+    <table v-if="bets.length > 0">
+        <tbody>
+            <tr v-for="bet in bets" :key="bet.id">
+                <td>{{ bet.name }}</td>
+                <td>{{ bet.prediction }}</td>
+                <td>{{ formatOdds(bet.current_odds) }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <span v-else>No bets!</span>
+</template>
 <script setup lang="ts">
-const countries = ref([]);
+import type { Bet } from './types/bet';
 
-const client = useSupabaseClient();
+const bets = ref<Bet[]>([]);
 
+async function getBets() {
+    const { openBets } = await $fetch('/api/open-bets/1');
+    bets.value = openBets ?? [];
+}
 
-async function getCountries() {
-    const { data } = await client.from('countries').select();
-    countries.value = data ?? [];
+function formatOdds(odds: number) {
+    return `${odds * 100}%`;
 }
 
 onMounted(() => {
-  getCountries()
+    getBets()
 });
 
 </script>
-<template>
-  <ul v-if="countries.length > 0">
-    <li v-for="country in countries" :key="country.id">{{ country.name }}</li>
-  </ul>
-  <span v-else>No countries!</span>
-</template>
+<style scoped>
+    td {
+        padding: 8px;
+    }
+</style>

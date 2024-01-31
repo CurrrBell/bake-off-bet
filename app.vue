@@ -1,22 +1,19 @@
 <script setup lang="ts">
-const countries = ref([]);
+const bets = ref([]);
 
-const client = useSupabaseClient();
-
-
-async function getCountries() {
-    const { data } = await client.from('countries').select();
-    countries.value = data ?? [];
+async function getBets() {
+    const { openBets } = await $fetch('/api/open-bets/1');
+    bets.value = openBets ?? [];
 }
 
 onMounted(() => {
-  getCountries()
+    getBets()
 });
 
 </script>
 <template>
-  <ul v-if="countries.length > 0">
-    <li v-for="country in countries" :key="country.id">{{ country.name }}</li>
+  <ul v-if="bets.length > 0">
+    <li v-for="country in bets" :key="country.id">{{ country.name }}</li>
   </ul>
-  <span v-else>No countries!</span>
+  <span v-else>No bets!</span>
 </template>

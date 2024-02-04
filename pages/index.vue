@@ -30,7 +30,7 @@ const columns = [
 ]
 
 async function getBets() {
-    const { openBets } = await $fetch('/api/open-bets/1');
+    const { openBets } = await $fetch('/api/open-bets/Weekly result');
     bets.value = openBets ?? [];
 }
 

@@ -9,7 +9,11 @@
 <script setup lang="ts">
 import type { Bet } from '../types/bet';
 
+const user = useSupabaseUser();
+
+
 const config = useAppConfig();
+
 
 console.log(config)
 

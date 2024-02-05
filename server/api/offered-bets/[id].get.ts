@@ -3,14 +3,10 @@ import type { Bet } from "~/types/bet";
 
 export default defineEventHandler(async (event) => {
     const client = await serverSupabaseClient(event);
-    const type = getRouterParam(event, 'type');
+    const id = getRouterParam(event, 'id');
 
     const { data, error } = await client
-        .rpc('get_open_bets', { type: decodeURI(type) });
+        .rpc('get_offered_bet', { id_to_get: id });
 
-    // if (error) {
-    //     return error;
-    // }
-
-    return { openBets: data as unknown as Bet[] };
+    return { bet: data as unknown as Bet };
 })

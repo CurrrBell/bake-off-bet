@@ -1,6 +1,9 @@
 <template>
     <UCard>
         <UTable :columns="columns" :rows="bets" :loading="isLoading">
+            <template #current_odds-data="{ row }">
+                {{ formatPercent(row.current_odds) }}
+            </template>
             <template #action-data="{ row }">
                 <UButton @click="placeBet(row)">Place bet</UButton>
             </template>
@@ -11,7 +14,6 @@
 import type { Bet } from '../types/bet';
 
 const isLoading = ref(true);
-
 const bets = ref<Bet[]>([]);
 const columns = [
     {
@@ -35,10 +37,6 @@ async function getBets() {
     const { openBets } = await $fetch('/api/open-bets/Weekly result');
     bets.value = openBets ?? [];
     isLoading.value = false;
-}
-
-function formatOdds(odds: number) {
-    return `${odds * 100}%`;
 }
 
 function placeBet(bet: Bet) {

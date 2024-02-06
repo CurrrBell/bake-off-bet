@@ -1,6 +1,9 @@
 <template>
     <UTable :rows="bets" :columns="columns" :loading="isLoading">
-        <template #result-data="row">
+        <template #odds-data="{row}">
+            {{ formatPercent(row.odds) }}
+        </template>
+        <template #result-data="{row}">
             {{ row.result ?? 'Pending' }}
         </template>
     </UTable>

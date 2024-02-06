@@ -1,18 +1,16 @@
 <template>
-    <UButton>test</UButton>
-    <UCard v-if="bets.length > 0">
-        <UTable :columns="columns" :rows="bets">
+    <UCard>
+        <UTable :columns="columns" :rows="bets" :loading="isLoading">
             <template #action-data="{ row }">
                 <UButton @click="placeBet(row)">Place bet</UButton>
             </template>
         </UTable>
     </UCard>
-    <span v-else>No bets!</span>
 </template>
 <script setup lang="ts">
 import type { Bet } from '../types/bet';
 
-const user = useSupabaseUser();
+const isLoading = ref(true);
 
 const bets = ref<Bet[]>([]);
 const columns = [
@@ -36,6 +34,7 @@ const columns = [
 async function getBets() {
     const { openBets } = await $fetch('/api/open-bets/Weekly result');
     bets.value = openBets ?? [];
+    isLoading.value = false;
 }
 
 function formatOdds(odds: number) {

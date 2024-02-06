@@ -4,10 +4,6 @@
             <UInput v-model="state.email" />
         </UFormGroup>
 
-        <!-- <UFormGroup label="Password" name="password">
-            <UInput v-model="state.password" type="password" />
-        </UFormGroup> -->
-
         <UButton type="submit">
             Submit
         </UButton>
